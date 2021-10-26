@@ -43,7 +43,7 @@
           class="mr-4"
           @click="validate"
           >
-            Download
+            Encrypt
           </v-btn>
 
       </v-sheet>
