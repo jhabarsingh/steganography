@@ -63,8 +63,54 @@ export default {
     }),
 
     methods: {
-        middleware() {
+        getBase64(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+          });
+        },
+        base64ToHex(str) {
+          const raw = atob(str);
+          let result = '';
+          for (let i = 0; i < raw.length; i++) {
+            const hex = raw.charCodeAt(i).toString(16);
+            result += (hex.length === 2 ? hex : '0' + hex);
+          }
+          return result.toUpperCase();
+        },
 
+        text2Binary(string) {
+            return string.split('').map(function (char) {
+                return char.charCodeAt(0).toString(2);
+            }).join(' ');
+        },
+
+        middleware() {
+          this.getBase64(this.thumbnail1).then(data => {
+            let message = this.text2Binary(this.message);
+            let s = ""
+            let counter = 0
+            let str = data;
+            for(let i=0; i<str.length; i++) {
+              if(str[i] == ",") counter++;
+              else if(counter) {
+                s += str[i];
+              }
+            }
+            str = s;
+
+            if(message.length > data.length) {
+              console.log("message size is very large");
+            }
+            else {
+              //
+            }
+
+            console.log(message)
+            console.log(data);
+          })
         },
         
         decrypt () {
