@@ -6,7 +6,7 @@
       style="padding:10px;width:99%;margin:auto;"
     >
       <p class="text-h4 text--primary">
-        Decryption
+        Encryption
       </p>
       
       <v-sheet 
@@ -32,7 +32,7 @@
           </v-img>
 
         <v-text-field
-          v-model="cost_price"
+          v-model="message"
           label="Message"
           required
           prepend-icon="mdi-message"
@@ -41,7 +41,7 @@
           <v-btn
           color="primary"
           class="mr-4"
-          @click="validate"
+          @click="decrypt"
           >
             Decrypt
           </v-btn>
@@ -51,3 +51,50 @@
     </v-sheet>
   </div>  
 </template>
+
+<script>
+export default {
+    data: () => ({
+      select: null,
+      valid: true,
+      thumbnail1: null,
+      message: "",
+      url1: null
+    }),
+
+    methods: {
+        decrypt () {
+          console.log("Validate");
+        },
+
+        Preview_image1() {
+          if(this.thumbnail1 == null) return;
+          if(this.isImage(this.thumbnail1.name) == false) {
+              this.$refs.image1.reset();
+              this.thumbnail1 = null;
+              return;
+          }
+          this.url1 = URL.createObjectURL(this.thumbnail1)
+        },
+
+        getExtension(filename) {
+          var parts = filename.split('.');
+          return parts[parts.length - 1];
+        },
+
+        isImage(filename) {
+          var ext = this.getExtension(filename);
+          switch (ext.toLowerCase()) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'svg':
+            case 'gif':
+              // etc
+              return true;
+            }
+            return false;
+          }
+    }
+}
+</script>
